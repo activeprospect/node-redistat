@@ -1,15 +1,14 @@
 {
   "name": "redistat",
-  "main": "./lib/index.js",
+  "main": "index.js",
   "version": "0.0.1",
   "private": "true",
   "dependencies": {
-    "hiredis": "0.1.x",
-    "redis": "0.7.x",
     "sugar": "1.1.x"
   },
   "devDependencies": {
     "mocha": "0.8.x",
-    "chai": "0.1.x"
+    "should": "0.5.x",
+		"benchmark": "0.3.x"
   }
 }

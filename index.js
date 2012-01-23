@@ -1,6 +1,4 @@
 require('sugar');
-var util = require('util');
-// var KeyMaker = require(__dirname + '/lib/keyMaker').KeyMaker;
 
 function RedistatModel(redisConnection, modelName, timeDepth){
   this.depth = timeDepth || "hour";
@@ -9,7 +7,6 @@ function RedistatModel(redisConnection, modelName, timeDepth){
   }
   this.scope = modelName;
   this.redis = redisConnection;
-  // this.KeyMaker = new KeyMaker(this.depth,this.scope);
   var self = this;
 }
 
@@ -19,7 +16,6 @@ RedistatModel.prototype.store = function(label, stats, timestamp){
   }
   var self = this;
   var keys = buildKeys(label,stats,timestamp);
-  console.log(util.inspect(keys));
   var indexes = buildLabelIndexes(label);
   Object.extended(keys).each(function(key,value){
     Object.extended(value).each(function(stat_key,incr_by){
@@ -34,7 +30,6 @@ RedistatModel.prototype.store = function(label, stats, timestamp){
     timestamp = timestamp || new Date;
 
     var dateKeys = buildDateKeys(timestamp);
-    console.log(util.inspect(dateKeys));
     var labelKeys = buildLabelKeys(label);
     var statHash = buildStatHash(stats);
     var returnHsh = {};
@@ -49,7 +44,7 @@ RedistatModel.prototype.store = function(label, stats, timestamp){
       var components = label.split('/');
       var labelKeys = [];
       components.each(function(comp,idx){
-        key = self.scope + "/";
+        var key = self.scope + "/";
         components.to(idx + 1).each(function(component){
           key = key + component + "/";
         });
@@ -110,8 +105,8 @@ RedistatModel.prototype.store = function(label, stats, timestamp){
 
   function buildLabelIndexes(label){
     var returnHsh = {};
-    base = this.scope + ".label_index:"
-    components = label.split('/');
+    var base = self.scope + ".label_index:"
+    var components = label.split('/');
     while (components.length > 0){
       label = base;
       var value = components.pop();
@@ -122,7 +117,6 @@ RedistatModel.prototype.store = function(label, stats, timestamp){
     }
     return returnHsh;
   }
-
 
 }
 
